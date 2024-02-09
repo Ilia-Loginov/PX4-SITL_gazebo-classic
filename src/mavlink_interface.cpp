@@ -587,6 +587,8 @@ void MavlinkInterface::send_mavlink_message(const mavlink_message_t *message)
 
     if (!is_serial_open()) {
       std::cerr << "Serial port closed! \n";
+      std::this_thread::sleep_for(std::chrono::seconds(1));
+      open_serial();
       return;
     }
 
@@ -595,6 +597,7 @@ void MavlinkInterface::send_mavlink_message(const mavlink_message_t *message)
 
       if (tx_q_.size() >= MAX_TXQ_SIZE) {
         std::cout << "Tx queue overflow\n";
+        tx_q_.clear();
       }
       tx_q_.emplace_back(message);
     }
