@@ -171,8 +171,22 @@ void MavlinkInterface::Load()
       } else {
         // When connecting to HITL via UDP, the vehicle talks to a specific port that we need to
         // listen to.
+#if 0 //pixhawk
+        std::string pxIp = "192.168.0.3";
+        remote_simulator_addr_.sin_addr.s_addr = inet_addr(pxIp.c_str());
+        remote_simulator_addr_.sin_port = htons(14560);
+#endif
+
+#if 1 //s_hawkV2
+        std::string pxIp = "192.168.200.101";
+        remote_simulator_addr_.sin_addr.s_addr = inet_addr(pxIp.c_str());
+        remote_simulator_addr_.sin_port = htons(14541);
+#endif
+
+#if 1 //default
         remote_simulator_addr_.sin_addr.s_addr = htonl(INADDR_ANY);
         remote_simulator_addr_.sin_port = htons(0);
+#endif
         local_simulator_addr_.sin_addr.s_addr = mavlink_addr_;
         local_simulator_addr_.sin_port = htons(mavlink_udp_port_);
       }
